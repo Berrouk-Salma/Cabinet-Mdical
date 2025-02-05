@@ -1,6 +1,9 @@
 <?php
+namespace App\Core;
+
 class Controller {
     protected function view($view, $data = []) {
-        require __DIR__ . "/../views/$view.php";
+        extract($data);
+        // require __DIR__ . "/../views/$view.php";
     }
 }
