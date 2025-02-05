@@ -1,7 +1,7 @@
 <?php
 namespace App\Models;
 
-use App\Core\Model;
+use app\Core\Model;
 
 class AppointmentModel extends Model {
     public function getAllAppointments() {
