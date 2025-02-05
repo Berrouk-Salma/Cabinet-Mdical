@@ -1,5 +1,5 @@
 <?php
-namespace App\Core;
+namespace app\Core;
 
 class Controller {
     protected function view($view, $data = []) {
