@@ -4,44 +4,53 @@ CREATE DATABASE medical_management;
 \c medical_management;
 
 
-CREATE TABLE patients (
-    id SERIAL PRIMARY KEY,
-    first_name VARCHAR(50) NOT NULL,
-    last_name VARCHAR(50) NOT NULL,
-    date_of_birth DATE NOT NULL,
-    gender VARCHAR(10) NOT NULL,
-    phone_number VARCHAR(15),
-    email VARCHAR(100) UNIQUE,
-    address TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+CREATE TABLE admin (
+  id_admin SERIAL PRIMARY KEY,
+  fn_admin VARCHAR(100) NOT NULL,
+  email_admin VARCHAR(255) NOT NULL UNIQUE,
+  password VARCHAR(100) NOT NULL
 );
 
-CREATE TABLE doctors (
-    id SERIAL PRIMARY KEY,
-    first_name VARCHAR(50) NOT NULL,
-    last_name VARCHAR(50) NOT NULL,
-    specialization VARCHAR(100) NOT NULL,
-    phone_number VARCHAR(15),
-    email VARCHAR(100) UNIQUE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+CREATE TABLE doctor (
+  id_doctor SERIAL PRIMARY KEY,
+  fn_doctor VARCHAR(100) NOT NULL,
+  email_doctor VARCHAR(255) NOT NULL UNIQUE,
+  password VARCHAR(100) NOT NULL,
+  date_birth DATE NOT NULL,
+  type_competence VARCHAR(50) NOT NULL CHECK (type_competence IN ('hearth', 'dentist', 'spe1', 'spe2')),
+  img_doctor VARCHAR(100) NOT NULL
 );
 
-CREATE TABLE appointments (
-    id SERIAL PRIMARY KEY,
-    patient_id INT REFERENCES patients(id) ON DELETE CASCADE,
-    doctor_id INT REFERENCES doctors(id) ON DELETE CASCADE,
-    appointment_date TIMESTAMP NOT NULL,
-    status VARCHAR(20) DEFAULT 'Scheduled',
-    notes TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+CREATE TABLE patient (
+  id_patient SERIAL PRIMARY KEY,
+  fn_patient VARCHAR(100) NOT NULL,
+  email_patient VARCHAR(255) NOT NULL UNIQUE,
+  password VARCHAR(100) NOT NULL,
+  date_birth DATE NOT NULL,
+  type_sickness VARCHAR(100) NOT NULL,
+  img_patient VARCHAR(100) NOT NULL
 );
 
-CREATE TABLE users (
-    id SERIAL PRIMARY KEY,
-    username VARCHAR(50) UNIQUE NOT NULL,
-    password_hash VARCHAR(255) NOT NULL,
-    role VARCHAR(20) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+CREATE TABLE raport (
+  id_raport SERIAL PRIMARY KEY,
+  desc_raport TEXT NOT NULL,
+  date_raport DATE NOT NULL,
+  id_patient INT NOT NULL REFERENCES patient(id_patient) ON DELETE CASCADE,
+  id_doctor INT NOT NULL REFERENCES doctor(id_doctor) ON DELETE CASCADE
+);
+
+CREATE TABLE rendez_vous (
+  id_rendezvous SERIAL PRIMARY KEY,
+  date_rendezvous DATE NOT NULL,
+  time_rdv TIME NOT NULL,
+  id_patient INT NOT NULL REFERENCES patient(id_patient) ON DELETE CASCADE,
+  id_doctor INT NOT NULL REFERENCES doctor(id_doctor) ON DELETE CASCADE
+);
+
+CREATE TABLE visit (
+  id_visit SERIAL PRIMARY KEY,
+  date_visit DATE NOT NULL,
+  id_patient INT NOT NULL REFERENCES patient(id_patient) ON DELETE CASCADE
 );
 
 -- INSERT INTO patients (first_name, last_name, date_of_birth, gender, phone_number, email, address)
